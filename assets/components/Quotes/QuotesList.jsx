@@ -4,6 +4,7 @@ import Quote from './Quote';
 import EmptyList from '../Common/EmptyList';
 export default function QuotesList(props) {
   const dataQuotes = props.dataQuotes;
+  const copyOnClick = props.copyOnClick;
   return (
     <Container className="mt-3" >
 
@@ -12,6 +13,7 @@ export default function QuotesList(props) {
           <Quote
             key={quote.id}
             data={quote}
+            copyOnClick={copyOnClick}
           />
         )
       }

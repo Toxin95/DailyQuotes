@@ -1,13 +1,14 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 
 export default function AddQuote(props) {
 
     return (
       <Form onSubmit={props.handleSubmit}>
       <Form.Group className="mb-3" controlId="addQuoteForm.Quote">
+
         <Form.Label>Quote <label className="text-danger">*</label></Form.Label>
-        <Form.Control as="textarea" rows={3} placeholder="Quote" value={props.data.text} name="text" onChange={props.handleChange} />
+        <Form.Control as="textarea" rows={3} placeholder="Quote" value={props.data.text} name="text" onChange={props.handleChange} required />
       </Form.Group>
         <Form.Group className="mb-3" controlId="addQuoteForm.Author">
           <Form.Label>Author</Form.Label>

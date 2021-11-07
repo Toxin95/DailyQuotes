@@ -1,11 +1,16 @@
 import React from 'react';
 import { Col, Card } from 'react-bootstrap';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy } from '@fortawesome/free-regular-svg-icons'
 export default function Quote(props) {
   const quote = props.data;
+  const copyOnClick = props.copyOnClick;
   return (
     <Col sm={6} className="mx-auto mt-3">
       <Card>
+        <Card.Header className="text-end">
+        <FontAwesomeIcon icon={faCopy} onClick={() => copyOnClick(quote.id)} />
+      </Card.Header>
         <Card.Body>
           <Card.Text>
             {quote.text}
