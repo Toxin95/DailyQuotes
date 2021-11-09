@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import AddQuote from './components/Quotes/AddQuote';
 import QuotesList from './components/Quotes/QuotesList';
 import SearchField from './components/Common/SearchField';
+import RandomQuote from './components/Quotes/RandomQuote';
 
 function App(props) {
   const [quotes, setQuotes] = useState(quotesData);
@@ -42,6 +43,14 @@ function App(props) {
       navigator.clipboard.writeText(selectedQuote.text + "\n( "+selectedQuote.author+")");
   };
 
+  const fetchQuote = async (rndNumber) => {
+      const results = await fetch("https://type.fit/api/quotes")
+      .then(response => response.json());
+      const quote = await results[rndNumber%results.length];
+      console.log({text: quote.text, author: quote.author});
+      return {text: quote.text, author: ((quote.author === null) ? "Anonymous" : quote.author)};
+  }
+
   return (
     <>
       <header>
@@ -53,6 +62,11 @@ function App(props) {
           </Row>
         </Container>
       </header>
+      <Container className="pt-2">
+        <Row>
+          <RandomQuote fetchQuote={fetchQuote} />
+        </Row>
+        </Container>
       <Container>
         <Row>
           <Col sm={6} className="mx-auto">
