@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import logo from './logo.png';
+import logo from '../logo.png';
 import './App.scss';
-import { quotesData } from './data/quotesData';
+import { quotesData } from '../data/quotesData';
 import { Container, Row, Col } from 'react-bootstrap';
-import AddQuote from './components/Quotes/AddQuote';
-import QuotesList from './components/Quotes/QuotesList';
-import SearchField from './components/Common/SearchField';
-import RandomQuote from './components/Quotes/RandomQuote';
+import AddQuote from '../components/Quotes/AddQuote';
+import QuotesList from '../components/Quotes/QuotesList';
+import SearchField from '../components/Common/SearchField';
+import RandomQuote from '../components/Quotes/RandomQuote';
 
-function App(props) {
+export default function Home(props) {
   const [quotes, setQuotes] = useState(quotesData);
   const [rndQuote, setRndQuote] = useState({
     text: '',
@@ -92,5 +92,3 @@ function App(props) {
     </>
   );
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));
