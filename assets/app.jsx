@@ -11,6 +11,10 @@ import RandomQuote from './components/Quotes/RandomQuote';
 
 function App(props) {
   const [quotes, setQuotes] = useState(quotesData);
+  const [rndQuote, setRndQuote] = useState({
+    text: '',
+    author: null,
+  });
   const [newQuote, setNewQuote] = useState({
     id: quotesData.length + 1,
     text: '',
@@ -47,8 +51,7 @@ function App(props) {
       const results = await fetch("https://type.fit/api/quotes")
       .then(response => response.json());
       const quote = await results[rndNumber%results.length];
-      console.log({text: quote.text, author: quote.author});
-      return {text: quote.text, author: ((quote.author === null) ? "Anonymous" : quote.author)};
+      setRndQuote({text: quote.text, author: ((quote.author === null) ? "Anonymous" : quote.author)});
   }
 
   return (
@@ -64,7 +67,7 @@ function App(props) {
       </header>
       <Container className="pt-2">
         <Row>
-          <RandomQuote fetchQuote={fetchQuote} />
+          <RandomQuote fetchQuote={fetchQuote} rndQuote={rndQuote} />
         </Row>
         </Container>
       <Container>
