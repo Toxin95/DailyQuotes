@@ -9,75 +9,45 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
+    public function register(Request $request): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-            $userPasswordHasherInterface->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('index');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->render('registration/register.html.twig', []);
     }
 
     /**
- * @Route("api/register", name="api_register")
- */
-public function SetUser(Request $request, EntityManagerInterface $em, ValidatorInterface $validator)
-{
+     * @Route("/api/register", name="api_register")
+     */
+    public function SetUser(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface)
+    {
 
-    $email = $request->request->get('email');
-    $password = $request->request->get('password');
-    var_dump($request->request);
-    die;
-    $user = new User();
-    $user->setEmail($request->request->get('email'));
-    $user->setPassword($request->request->get('password'));
-    // if you want to pass the SignUp class to Validator use
-    // $errors = $validator->validate($signUp);
-    // but you need to customize the errors to return below, dump($errors); for more info
-    $emailError = $validator->validateProperty($signUp, 'email');
-    $passwordError = $validator->validateProperty($signUp, 'password');
-    $formErrors = [];
-    if(count($emailError) > 0) {
-        $formErrors['emailError'] = $emailError[0]->getMessage();
+      return new JsonResponse([
+        'success' => true,
+          'message' => 'Thank you for registering'
+      ]);
+        $data = json_decode($request->getContent(), true);
+        $email = $data['email'];
+        $password = $data['plainPassword'];
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword(
+        $userPasswordHasherInterface->hashPassword(
+                $user,
+                $password
+            )
+        );
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new JsonResponse([
+          'success' => true,
+            'message' => 'Thank you for registering'
+        ]);
     }
-    if(count($passwordError) > 0) {
-        $formErrors['passwordError'] = $passwordError[0]->getMessage();
-    }
-    if($formErrors) {
-        return new JsonResponse($formErrors);
-    }
-    $user = new User();
-    $user->setEmail($signUp->getEmail());
-    $user->setPassword($signUp->getPassword());
-    $em->persist($user);
-    $em->flush();
-    return new JsonResponse([
-        'success_message' => 'Thank you for registering'
-    ]);
-}
 }
