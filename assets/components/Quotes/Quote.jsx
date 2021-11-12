@@ -6,8 +6,7 @@ export default function Quote(props) {
   const quote = props.data;
   const copyOnClick = props.copyOnClick;
   return (
-    <Col sm={6} className="mx-auto mt-3">
-      <Card>
+      <Card className="mt-2">
         <Card.Header className="text-end">
         <FontAwesomeIcon icon={faCopy} onClick={() => copyOnClick(quote.id)} />
       </Card.Header>
@@ -18,7 +17,6 @@ export default function Quote(props) {
           <Card.Subtitle className="mb-2 text-muted">{quote.author}</Card.Subtitle>
         </Card.Body>
       </Card>
-    </Col>
   )
 
 }

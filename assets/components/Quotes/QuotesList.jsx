@@ -2,26 +2,35 @@ import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import Quote from './Quote';
 import EmptyList from '../Common/EmptyList';
+import Loading from '../Common/Loading';
 export default function QuotesList(props) {
-  const dataQuotes = props.dataQuotes;
-  const copyOnClick = props.copyOnClick;
+  const {dataQuotes, copyOnClick, isLoading} = props;
   return (
-    <Container className="mt-3" >
-
+    <>
       {
-      dataQuotes.map(quote =>
+      (!isLoading) && dataQuotes.map(quote =>{
+        if(quote.author === undefined || quote.author == '') {
+          quote.author = 'Anonymous';
+        }
+        return (
           <Quote
-            key={quote.id}
-            data={quote}
-            copyOnClick={copyOnClick}
+          key={quote.id}
+          data={quote}
+          copyOnClick={copyOnClick}
           />
         )
       }
-      {
-        (dataQuotes === undefined || dataQuotes.length === 0) && <EmptyList />
-       }
 
-    </Container>
+        )
+      }
+      {
+        (isLoading) && <Loading />
+      }
+      {
+
+        (isLoading == false && (dataQuotes === undefined || dataQuotes.length === 0)) && <EmptyList />
+       }
+</>
   )
 
 }

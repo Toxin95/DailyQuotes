@@ -22,15 +22,10 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/api/register", name="api_register")
+     * @Route("/register", name="register")
      */
     public function SetUser(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface)
     {
-
-      return new JsonResponse([
-        'success' => true,
-          'message' => 'Thank you for registering'
-      ]);
         $data = json_decode($request->getContent(), true);
         $email = $data['email'];
         $password = $data['plainPassword'];
@@ -49,5 +44,18 @@ class RegistrationController extends AbstractController
           'success' => true,
             'message' => 'Thank you for registering'
         ]);
+    }
+
+    /**
+     * @Route("/api/getUserByEmail", name="api_getUserByEmail")
+     */
+    public function getUserByEmail(Request $request) {
+      $data = json_decode($request->getContent(), true);
+      $email = $data['email'];
+
+      $entityManager = $this->getDoctrine()->getManager();
+      $userRepository = $entityManager->getRepository(User::class);
+      $user = $userRepository->findOneByEmail($email);
+      var_dump($user);
     }
 }
