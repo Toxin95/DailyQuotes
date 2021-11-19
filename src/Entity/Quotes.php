@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\QuotesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ *  @ApiFilter(SearchFilter::class, properties={"text": "ipartial", "author": "ipartial"})
  * @ORM\Entity(repositoryClass=QuotesRepository::class)
  */
 
